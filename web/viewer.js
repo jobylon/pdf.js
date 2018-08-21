@@ -1325,11 +1325,11 @@ var validateFileURL = void 0;
       return;
     }
     try {
-      var viewerHostname = new URL(window.location.href).hostname || 'null';
+      var viewerHostname = new _pdfjsLib.URL(window.location.href).hostname || 'null';
       if (HOSTED_VIEWER_HOSTNAMES.indexOf(viewerHostname) >= 0) {
         return;
       }
-      var viewerOrigin = new URL(window.location.href).origin || 'null';
+      var viewerOrigin = new _pdfjsLib.URL(window.location.href).origin || 'null';
       if (HOSTED_VIEWER_ORIGINS.includes(viewerOrigin)) {
         return;
       }
