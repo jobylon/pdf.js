@@ -1318,13 +1318,18 @@ var PDFViewerApplication = {
 };
 var validateFileURL = void 0;
 {
+  var HOSTED_VIEWER_HOSTNAMES = ['null', 'localhost', 'jobylon.github.io', 'pdfjs.jobylon.com'];
   var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
   validateFileURL = function validateFileURL(file) {
     if (file === undefined) {
       return;
     }
     try {
-      var viewerOrigin = new _pdfjsLib.URL(window.location.href).origin || 'null';
+      var viewerHostname = new URL(window.location.href).hostname || 'null';
+      if (HOSTED_VIEWER_HOSTNAMES.indexOf(viewerHostname) >= 0) {
+        return;
+      }
+      var viewerOrigin = new URL(window.location.href).origin || 'null';
       if (HOSTED_VIEWER_ORIGINS.includes(viewerOrigin)) {
         return;
       }
