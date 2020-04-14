@@ -395,7 +395,7 @@ var PDFViewerApplication = {
       return _this._initializeL10n();
     }).then(function () {
       if (_this.isViewerEmbedded && _app_options.AppOptions.get('externalLinkTarget') === _pdfjsLib.LinkTarget.NONE) {
-        _app_options.AppOptions.set('externalLinkTarget', _pdfjsLib.LinkTarget.TOP);
+        _app_options.AppOptions.set('externalLinkTarget', _pdfjsLib.LinkTarget.BLANK);
       }
       return _this._initializeViewerComponents();
     }).then(function () {
@@ -3472,7 +3472,7 @@ var defaultOptions = {
     kind: OptionKind.VIEWER
   },
   externalLinkTarget: {
-    value: 0,
+    value: 2,
     kind: OptionKind.VIEWER
   },
   imageResourcesPath: {
@@ -10401,7 +10401,7 @@ function getDefaultPreferences() {
       "disableFontFace": false,
       "textLayerMode": 1,
       "useOnlyCssZoom": false,
-      "externalLinkTarget": 0,
+      "externalLinkTarget": 2,
       "renderer": "canvas",
       "renderInteractiveForms": false,
       "enablePrintAutoRotate": false,
