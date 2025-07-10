@@ -34,6 +34,23 @@ window.PDFViewerApplication = PDFViewerApplication;
 window.PDFViewerApplicationConstants = AppConstants;
 window.PDFViewerApplicationOptions = AppOptions;
 
+const flipConfigParam = new URLSearchParams(window.location.search).get(
+  "flipconfig"
+);
+if (flipConfigParam) {
+  try {
+    const flipConfig = JSON.parse(atob(flipConfigParam));
+    if (flipConfig.disablePrint === true) {
+      window.PDFViewerApplicationOptions.set("supportsPrinting", false);
+    }
+    if (flipConfig.disableSave === true) {
+      window.PDFViewerApplicationOptions.set("disableSaving", true);
+    }
+  } catch (e) {
+    console.warn("Invalid config param", e);
+  }
+}
+
 function getViewerConfiguration() {
   return {
     appContainer: document.body,

@@ -782,7 +782,10 @@ const PDFViewerApplication = {
         console.warn(msg);
       });
     }
-
+    if (AppOptions.get("disableSaving")) {
+      appConfig.toolbar?.download?.classList.add("hidden");
+      appConfig.secondaryToolbar?.downloadButton.classList.add("hidden");
+    }
     if (!this.supportsPrinting) {
       appConfig.toolbar?.print?.classList.add("hidden");
       appConfig.secondaryToolbar?.printButton.classList.add("hidden");
@@ -1187,6 +1190,9 @@ const PDFViewerApplication = {
   },
 
   async download() {
+    if (AppOptions.get("disableSaving")) {
+      return;
+    }
     let data;
     try {
       data = await (this.pdfDocument
@@ -1199,6 +1205,9 @@ const PDFViewerApplication = {
   },
 
   async save() {
+    if (AppOptions.get("disableSaving")) {
+      return;
+    }
     if (this._saveInProgress) {
       return;
     }

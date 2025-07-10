@@ -203,6 +203,11 @@ const defaultOptions = {
     value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE,
   },
+  disableSaving: {
+    /** @type {boolean} */
+    value: false,
+    kind: OptionKind.VIEWER,
+  },
   enableAltText: {
     /** @type {boolean} */
     value: false,
