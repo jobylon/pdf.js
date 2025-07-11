@@ -694,6 +694,10 @@ const defaultOptions = {
     value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
+  disableSaving: {
+    value: false,
+    kind: OptionKind.VIEWER
+  },
   enableAltText: {
     value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
@@ -15221,6 +15225,10 @@ const PDFViewerApplication = {
         console.warn(msg);
       });
     }
+    if (AppOptions.get("disableSaving")) {
+      appConfig.toolbar?.download?.classList.add("hidden");
+      appConfig.secondaryToolbar?.downloadButton.classList.add("hidden");
+    }
     if (!this.supportsPrinting) {
       appConfig.toolbar?.print?.classList.add("hidden");
       appConfig.secondaryToolbar?.printButton.classList.add("hidden");
@@ -15469,6 +15477,9 @@ const PDFViewerApplication = {
     });
   },
   async download() {
+    if (AppOptions.get("disableSaving")) {
+      return;
+    }
     let data;
     try {
       data = await (this.pdfDocument ? this.pdfDocument.getData() : this.pdfLoadingTask.getData());
@@ -15476,6 +15487,9 @@ const PDFViewerApplication = {
     this.downloadManager.download(data, this._downloadUrl, this._docFilename);
   },
   async save() {
+    if (AppOptions.get("disableSaving")) {
+      return;
+    }
     if (this._saveInProgress) {
       return;
     }
@@ -16821,6 +16835,20 @@ const AppConstants = {
 window.PDFViewerApplication = PDFViewerApplication;
 window.PDFViewerApplicationConstants = AppConstants;
 window.PDFViewerApplicationOptions = AppOptions;
+const flipConfigParam = new URLSearchParams(window.location.search).get("flipconfig");
+if (flipConfigParam) {
+  try {
+    const flipConfig = JSON.parse(atob(flipConfigParam));
+    if (flipConfig.disablePrint === true) {
+      window.PDFViewerApplicationOptions.set("supportsPrinting", false);
+    }
+    if (flipConfig.disableSave === true) {
+      window.PDFViewerApplicationOptions.set("disableSaving", true);
+    }
+  } catch (e) {
+    console.warn("Invalid config param", e);
+  }
+}
 function getViewerConfiguration() {
   return {
     appContainer: document.body,
